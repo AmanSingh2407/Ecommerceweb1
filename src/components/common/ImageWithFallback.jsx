@@ -7,14 +7,14 @@ export const ImageWithFallback = ({
   className = '',
   imgClassName = '',
   aspectRatio = 'aspect-square',
-  objectFit = 'object-cover',
+  objectFit = 'object-contain',
   fallbackIcon: FallbackIcon = ImageOff
 }) => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
 
   return (
-    <div className={`relative overflow-hidden bg-slate-100 dark:bg-slate-800 ${aspectRatio} ${className}`}>
+    <div className={`relative flex items-center justify-center overflow-hidden bg-slate-100 dark:bg-slate-800/50 ${aspectRatio} ${className}`}>
       {loading && !error && (
         <div className="absolute inset-0 bg-slate-200 dark:bg-slate-700 animate-pulse" />
       )}
@@ -32,7 +32,7 @@ export const ImageWithFallback = ({
             setError(true);
             setLoading(false);
           }}
-          className={`w-full h-full ${objectFit} transition-all duration-300 ${
+          className={`max-w-full max-h-full ${objectFit} mx-auto transition-all duration-300 ${
             loading ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
           } ${imgClassName}`}
         />

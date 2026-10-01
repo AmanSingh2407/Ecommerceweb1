@@ -103,14 +103,15 @@ export const ProductDetails = () => {
         <div className="space-y-4">
           <div
             onClick={() => setIsZoomOpen(true)}
-            className="relative rounded-3xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-800 aspect-square shadow-subtle group cursor-zoom-in"
+            className="relative rounded-3xl overflow-hidden bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 aspect-square shadow-subtle group cursor-zoom-in flex items-center justify-center p-4 sm:p-6"
           >
             <ImageWithFallback
               src={activeImage}
               alt={product.name}
               aspectRatio="aspect-square"
-              objectFit="object-cover"
-              imgClassName="group-hover:scale-105 transition-transform duration-500"
+              objectFit="object-contain"
+              className="w-full h-full bg-transparent border-0"
+              imgClassName="max-h-full max-w-full object-contain mx-auto group-hover:scale-105 transition-transform duration-500 rounded-2xl"
             />
             
             {/* Zoom Hint Badge */}

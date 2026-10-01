@@ -78,12 +78,14 @@ export const ProductCard = ({ product }) => {
         </button>
 
         {/* Product Image Link */}
-        <Link to={`/product/${product.slug}`} className="block w-full h-full">
+        <Link to={`/product/${product.slug}`} className="block w-full h-full p-2 sm:p-3 flex items-center justify-center">
           <ImageWithFallback
             src={product.thumbnail}
             alt={product.name}
             aspectRatio="aspect-square"
-            className="group-hover:scale-105 transition-transform duration-500"
+            objectFit="object-contain"
+            className="w-full h-full bg-transparent flex items-center justify-center"
+            imgClassName="max-h-full max-w-full object-contain mx-auto group-hover:scale-105 transition-transform duration-500 rounded-xl"
           />
         </Link>
 
