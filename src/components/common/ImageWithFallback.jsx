@@ -5,6 +5,7 @@ export const ImageWithFallback = ({
   src,
   alt = '',
   className = '',
+  imgClassName = '',
   aspectRatio = 'aspect-square',
   objectFit = 'object-cover',
   fallbackIcon: FallbackIcon = ImageOff
@@ -33,7 +34,7 @@ export const ImageWithFallback = ({
           }}
           className={`w-full h-full ${objectFit} transition-all duration-300 ${
             loading ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
-          }`}
+          } ${imgClassName}`}
         />
       )}
     </div>

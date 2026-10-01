@@ -10,11 +10,12 @@ import { Price } from '../components/ui/Price';
 import { Rating } from '../components/ui/Rating';
 import { QuantitySelector } from '../components/ui/QuantitySelector';
 import { Button } from '../components/ui/Button';
+import { Modal } from '../components/ui/Modal';
 import { ReviewSection } from '../components/product/ReviewSection';
 import { ProductRecommendations } from '../components/product/ProductRecommendations';
 import { RecentlyViewed, saveToRecentlyViewed } from '../components/product/RecentlyViewed';
 import { ProductDetailsSkeleton } from '../components/common/LoadingSkeleton';
-import { ShoppingBag, Heart, Check, ShieldCheck, Truck, RefreshCw, Share2 } from 'lucide-react';
+import { ShoppingBag, Heart, Check, ShieldCheck, Truck, RefreshCw, Share2, ZoomIn, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export const ProductDetails = () => {
   const { id: productSlug } = useParams();
@@ -25,6 +26,7 @@ export const ProductDetails = () => {
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState('description');
   const [isLoading, setIsLoading] = useState(true);
+  const [isZoomOpen, setIsZoomOpen] = useState(false);
 
   const { addItem } = useCartStore();
   const { toggleWishlist, isInWishlist } = useWishlistStore();
@@ -80,6 +82,8 @@ export const ProductDetails = () => {
     );
   };
 
+  const currentImageIdx = images.indexOf(activeImage);
+
   return (
     <div className="container mx-auto px-4 sm:px-6 py-6 space-y-12">
       
@@ -97,13 +101,23 @@ export const ProductDetails = () => {
         
         {/* Left Image Gallery */}
         <div className="space-y-4">
-          <div className="relative rounded-3xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-800 aspect-square shadow-subtle group">
+          <div
+            onClick={() => setIsZoomOpen(true)}
+            className="relative rounded-3xl overflow-hidden bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-800 aspect-square shadow-subtle group cursor-zoom-in"
+          >
             <ImageWithFallback
               src={activeImage}
               alt={product.name}
               aspectRatio="aspect-square"
-              className="group-hover:scale-105 transition-transform duration-500"
+              objectFit="object-cover"
+              imgClassName="group-hover:scale-105 transition-transform duration-500"
             />
+            
+            {/* Zoom Hint Badge */}
+            <div className="absolute bottom-4 right-4 bg-slate-900/80 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity">
+              <ZoomIn className="w-3.5 h-3.5" />
+              <span>Click to Expand</span>
+            </div>
           </div>
 
           {/* Thumbnails */}
@@ -114,7 +128,7 @@ export const ProductDetails = () => {
                   key={idx}
                   onClick={() => setActiveImage(img)}
                   className={`w-20 h-20 rounded-xl overflow-hidden border-2 transition-all shrink-0 ${
-                    activeImage === img ? 'border-brand-600 scale-95 shadow-md' : 'border-transparent opacity-75 hover:opacity-100'
+                    activeImage === img ? 'border-brand-600 scale-95 shadow-md ring-2 ring-brand-500/30' : 'border-transparent opacity-75 hover:opacity-100'
                   }`}
                 >
                   <ImageWithFallback src={img} alt={`Thumb ${idx}`} aspectRatio="aspect-square" />
@@ -272,7 +286,7 @@ export const ProductDetails = () => {
 
       </div>
 
-      {/* Tabs Section (Description / Specifications / Shipping & Returns) */}
+      {/* Tabs Section (Description / Specifications / Customer Reviews) */}
       <div className="pt-8 border-t border-slate-200 dark:border-slate-800 space-y-6">
         <div className="flex items-center gap-6 border-b border-slate-200 dark:border-slate-800">
           <button
@@ -329,6 +343,45 @@ export const ProductDetails = () => {
       {/* Recommendations & Recently Viewed */}
       <ProductRecommendations product={product} />
       <RecentlyViewed currentProductId={product.id} />
+
+      {/* FULLSCREEN LIGHTBOX IMAGE ZOOM MODAL */}
+      {isZoomOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md animate-fade-in">
+          <button
+            onClick={() => setIsZoomOpen(false)}
+            className="absolute top-6 right-6 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors z-20"
+            aria-label="Close Zoom"
+          >
+            <X className="w-6 h-6" />
+          </button>
+
+          {images.length > 1 && (
+            <>
+              <button
+                onClick={() => setActiveImage(images[(currentImageIdx - 1 + images.length) % images.length])}
+                className="absolute left-6 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors z-20"
+              >
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button
+                onClick={() => setActiveImage(images[(currentImageIdx + 1) % images.length])}
+                className="absolute right-6 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors z-20"
+              >
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </>
+          )}
+
+          <div className="relative max-w-4xl max-h-[85vh] w-full h-full flex items-center justify-center">
+            <img
+              src={activeImage}
+              alt={product.name}
+              className="max-w-full max-h-full object-contain rounded-2xl shadow-2xl animate-slide-up"
+            />
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
