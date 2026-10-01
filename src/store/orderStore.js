@@ -32,7 +32,7 @@ const defaultMockOrders = [
     tax: 21.60,
     total: 291.60,
     shippingAddress: {
-      fullName: 'Alex Vance',
+      fullName: 'Aman Singh',
       phone: '+1 (555) 234-5678',
       house: 'Apt 4B, Lumina Towers',
       street: '742 Evergreen Terrace',
@@ -77,7 +77,7 @@ const defaultMockOrders = [
     tax: 23.92,
     total: 322.92,
     shippingAddress: {
-      fullName: 'Alex Vance',
+      fullName: 'Aman Singh',
       phone: '+1 (555) 234-5678',
       house: 'Apt 4B, Lumina Towers',
       street: '742 Evergreen Terrace',

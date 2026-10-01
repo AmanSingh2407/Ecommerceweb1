@@ -7,7 +7,7 @@ import { Input } from '../components/ui/Input';
 import { Mail, Lock, LogIn, Eye, EyeOff } from 'lucide-react';
 
 export const Login = () => {
-  const [email, setEmail] = useState('alex.vance@example.com');
+  const [email, setEmail] = useState('aman.singh@example.com');
   const [password, setPassword] = useState('password123');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

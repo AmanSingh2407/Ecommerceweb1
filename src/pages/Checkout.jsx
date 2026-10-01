@@ -84,7 +84,7 @@ export const Checkout = () => {
               <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">1. Customer Contact</h3>
             </div>
             <p className="text-xs text-slate-600 dark:text-slate-400">
-              Logged in as <strong className="text-slate-800 dark:text-slate-200">{user?.name || 'Alex Vance'}</strong> ({user?.email || 'alex.vance@example.com'})
+              Logged in as <strong className="text-slate-800 dark:text-slate-200">{user?.name || 'Aman Singh'}</strong> ({user?.email || 'aman.singh@example.com'})
             </p>
           </div>
 

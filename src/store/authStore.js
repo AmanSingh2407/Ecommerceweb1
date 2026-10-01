@@ -3,17 +3,17 @@ import { getStorageItem, setStorageItem, removeStorageItem, STORAGE_KEYS } from 
 
 const defaultUser = {
   id: 'usr-101',
-  name: 'Alex Vance',
-  email: 'alex.vance@example.com',
+  name: 'Aman Singh',
+  email: 'aman.singh@example.com',
   phone: '+1 (555) 234-5678',
-  avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+  avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
   createdAt: '2026-01-15'
 };
 
 const defaultAddresses = [
   {
     id: 'addr-1',
-    fullName: 'Alex Vance',
+    fullName: 'Aman Singh',
     phone: '+1 (555) 234-5678',
     house: 'Apt 4B, Lumina Towers',
     street: '742 Evergreen Terrace',
@@ -26,7 +26,7 @@ const defaultAddresses = [
   },
   {
     id: 'addr-2',
-    fullName: 'Alex Vance (Office)',
+    fullName: 'Aman Singh (Office)',
     phone: '+1 (555) 987-6543',
     house: 'Suite 1200, AURA HQ',
     street: '500 Howard Street',
@@ -39,17 +39,26 @@ const defaultAddresses = [
   }
 ];
 
-const initialUser = getStorageItem(STORAGE_KEYS.USER, defaultUser);
-const initialAddresses = getStorageItem(STORAGE_KEYS.ADDRESSES, defaultAddresses);
+// Always update user to Aman Singh if previously stored as Alex Vance
+let storedUser = getStorageItem(STORAGE_KEYS.USER, null);
+if (!storedUser || storedUser.name === 'Alex Vance') {
+  storedUser = defaultUser;
+  setStorageItem(STORAGE_KEYS.USER, defaultUser);
+}
+
+let storedAddresses = getStorageItem(STORAGE_KEYS.ADDRESSES, null);
+if (!storedAddresses || storedAddresses[0]?.fullName === 'Alex Vance') {
+  storedAddresses = defaultAddresses;
+  setStorageItem(STORAGE_KEYS.ADDRESSES, defaultAddresses);
+}
 
 export const useAuthStore = create((set, get) => ({
-  user: initialUser,
-  isAuthenticated: !!initialUser,
-  addresses: initialAddresses,
+  user: storedUser,
+  isAuthenticated: !!storedUser,
+  addresses: storedAddresses,
 
   // Login action
   login: async (email, password) => {
-    // Simulate API network request latency
     await new Promise((resolve) => setTimeout(resolve, 600));
 
     if (!email || !password) {
@@ -62,10 +71,10 @@ export const useAuthStore = create((set, get) => ({
 
     const userData = {
       id: 'usr-' + Date.now().toString().slice(-4),
-      name: email.split('@')[0].replace('.', ' ').toUpperCase(),
+      name: email.toLowerCase().includes('aman') ? 'Aman Singh' : email.split('@')[0].replace('.', ' ').toUpperCase(),
       email,
       phone: '+1 (555) 019-2834',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
       createdAt: new Date().toISOString()
     };
 
@@ -88,7 +97,7 @@ export const useAuthStore = create((set, get) => ({
       name,
       email,
       phone: phone || '+1 (555) 000-0000',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
       createdAt: new Date().toISOString()
     };
 
